@@ -1,21 +1,30 @@
 package application;
 
-import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
+import model.dao.DaoFactory;
+import model.dao.SellerDao;
 import model.entities.Department;
 import model.entities.Seller;
 
 public class Program {
 
 	public static void main(String[] args) {
-
-		Department d1 = new Department(1, "Computer");
 		
-		System.out.println(d1);
+		SellerDao sellerDao = DaoFactory.createSellerDao();
 		
-		Seller s1 = new Seller(1, "Thiago", "reist36@gmail", new Date(), 3000.00, d1);
+		System.out.println("===== TEST 1: seller findByID =====");
+		Seller seller = sellerDao.findById(8);
+		System.out.println(seller);
 		
-		System.out.println(s1);
+		System.out.println();
+		System.out.println("===== TEST 2: seller findByDepartment =====");
+		Department department = new Department(2, null);
+		List<Seller> list = sellerDao.findByDepartment(department);
+		
+		list.forEach(System.out::println);
+		
 
 	}
 
