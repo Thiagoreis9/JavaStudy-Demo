@@ -16,6 +16,10 @@ public class Program {
 
 	public static void main(String[] args) throws ParseException {
 		
+		Scanner sc = new Scanner(System.in);
+		Locale.setDefault(Locale.US);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
 		SellerDao sellerDao = DaoFactory.createSellerDao();
 		
 		System.out.println("===== TEST 1: seller findByID =====");
@@ -36,20 +40,51 @@ public class Program {
 		
 		System.out.println();
 		System.out.println("===== TEST 4: seller insert =====");
-		Scanner sc = new Scanner(System.in);
-		Locale.setDefault(Locale.US);
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		System.out.println("Sigin new Seller: ");
-		System.out.print("Name: ");
-		String name = sc.nextLine();
-		System.out.print("Email: ");
-		String email = sc.nextLine();
-		System.out.print("BirthDate (dd/MM/yyyy): ");
-		String date = sc.next();
-		Date birthDate = new java.sql.Date(sdf.parse(date).getTime());
-		System.out.print("BaseSalary: ");
-		Double baseSalary = sc.nextDouble();
-		sellerDao.insert(new Seller(name, email, birthDate, baseSalary, department));
+		System.out.print("Want run TEST 4 (s/n)? ");
+		char resp = sc.next().charAt(0);
+		sc.nextLine();
+		if(resp == 's') {
+			System.out.println("Sigin new Seller: ");
+			System.out.print("Name: ");
+			String name1 = sc.nextLine();
+			System.out.print("Email: ");
+			String email1 = sc.nextLine();
+			System.out.print("BirthDate (dd/MM/yyyy): ");
+			String date1 = sc.next();
+			Date birthDate1 = new java.sql.Date(sdf.parse(date1).getTime());
+			System.out.print("BaseSalary: ");
+			Double baseSalary1 = sc.nextDouble();
+			sellerDao.insert(new Seller(name1, email1, birthDate1, baseSalary1, department));
+		}
+
+		System.out.println();
+		System.out.println("===== TEST 5: seller update =====");
+		System.out.print("Want run TEST 5 (s/n)? ");
+		resp = sc.next().charAt(0);
+		sc.nextLine();
+		if(resp == 's') {
+			System.out.print("Insert the id of the seller to be updated: ");
+			int sellerId = sc.nextInt();
+			System.out.println("Update current Seller #" + sellerId + ": ");
+			System.out.print("Name: ");
+			sc.nextLine();
+			String name = sc.nextLine();
+			System.out.print("Email: ");
+			String email = sc.nextLine();
+			System.out.print("BirthDate (dd/MM/yyyy): ");
+			String date = sc.next();
+			Date birthDate = new java.sql.Date(sdf.parse(date).getTime());
+			System.out.print("BaseSalary: ");
+			Double baseSalary = sc.nextDouble();
+			seller = sellerDao.findById(sellerId);
+			seller.setName(name);
+			seller.setEmail(email);
+			seller.setBirthDate(birthDate);
+			seller.setBaseSalary(baseSalary);
+			sellerDao.update(seller);
+			System.out.println("Update Completed!");
+		}
+		
 		sc.close();
 
 	}
